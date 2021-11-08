@@ -1,14 +1,14 @@
 # Final Project
 
 ## Domain of Interest
-We are interested in the quality and popularity of TV shows in the main streaming platforms including Netflix, Prime Video, HBO Max, and Disney+.
+We are interested in the quality and popularity of TV shows in the mainstreaming platforms, including Netflix, Prime Video, HBO Max, and Disney+.
 
-During pandemic period, people stay at home and do limited activity. A tremendous amount of people tend to watch TV shows during quarantine. Streaming platforms have increasing subscribers. We would like to analyze the dataset from the main streaming platforms (Netflix, Prime Video, HBO Max, and Disney+) to help people find out the most recommended one.
+During the pandemic period, people stay at home and do limited activity. A tremendous amount of people tend to watch TV shows during quarantine. Streaming platforms have increasing subscribers. We would like to analyze the dataset from the leading streaming platforms (Netflix, Prime Video, HBO Max, and Disney+) to help people find out the most recommended one.
 
 Questions we hope to answer:
-- Which platform is the most recommended for a family, which have children, to subscribe?
+- Which platform is the most recommended for a family, which have children to subscribe?
 - Which platform is more globalized (provides more options of caption or availability in more counties)?
-- Which platform has the largest amount of TV shows?
+- Which platform has the most enormous amount of TV shows?
 
 
 ## Examples of Data Driven Project
@@ -31,18 +31,18 @@ Questions we hope to answer:
 - Collection Methodology: Sources from Amazon Prime website
 - This data set was created so as to analyze the latest shows available on Amazon Prime as well as the shows with a high rating.
 - 8 columns * 503 rows
-- Which TV show is most popular?
+- Which TV show is most prevalent?
 
 3. [TV shows on Netflix, Prime Video, Hulu and Disney+](https://www.kaggle.com/ruchi798/tv-shows-on-netflix-prime-video-hulu-and-disney)
 - Data collected by Ruchi Bhatia
 - Collection Methodology: IMDb, data was scraped using Beautiful Soup
 - The data scraped comprises a comprehensive list of tv shows available on various streaming platforms
 - 12 columns * 5368 rows
-- Which streaming platform do you recommend to subscribe based on the quantity of high quality TV shows.
+- Which streaming platform do you recommend to subscribe based on the number of high quality TV shows.
 
 4. [HBO TV Shows, Documentaries, Movies as of 2020](https://www.kaggle.com/rishidamarla/hbo-tv-shows-documentaries-movies-as-of-2020) by Rishi Damarla
 - Data collected by Rishi Damarla
 - Collection Methodology: Data World
-- In this dataset, we can find all kinds of information on tv shows, movies, documentary series and all other forms of content available on HBO as of 2020.
+- In this dataset, we can find all kinds of information on tv shows, movies, documentary series, and all other forms of content available on HBO as of 2020.
 - 75 columns * 10 rows
-- How many TV shows are shown in HBO that has IMDb greater than 8.0?
+- How many TV shows are shown on HBO that has IMDb greater than 8.0?
