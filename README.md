@@ -1,5 +1,5 @@
 # Final Project
-
+### Helen Lei, Kelsey Li, Scarlet Zheng
 ## Domain of Interest
 We are interested in the quality and popularity of TV shows in the mainstreaming platforms, including Netflix, Prime Video, HBO Max, and Disney+.
 
