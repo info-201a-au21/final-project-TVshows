@@ -27,6 +27,7 @@ new_IMDb <- t(overview_IMDb)
 new_IMDb <- data.frame(names = row.names(new_IMDb), new_IMDb)
 
 # creating the bar plot
+
 bar_IMDb <- ggplot(data = new_IMDb) +
   geom_bar(aes(x = names,
                y = new_IMDb,

@@ -17,6 +17,7 @@ prime_lang$lang_prop <- percent(prime_lang$lang_prop, accuracy = 0.1)
 
 
 # Pie plot to see the language proportions
+
 lang_pie <- ggplot(prime_lang, aes(x = "", y = lang_prop, fill = Language)) +
   geom_bar(stat = "identity") +
   coord_polar("y", start = 0) +
