@@ -7,7 +7,6 @@ output: html_document
 
 ```{r setup, include=FALSE}
 source("analysis.R")
-
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
@@ -69,4 +68,8 @@ lang_pie <- ggplot(prime_lang, aes(x = "", y = lang_prop, fill = Language)) +
 lang_pie
 ```
 
+```{r table. echo=FALSE}
+TV_show_4 %>% select(Title, Year, Age, IMDb, Netflix, Hulu, Prime.Video, Disney.) %>%
+  kable(caption = 'Table: TV Shows (Netflix, Hulu, Prime, Disney)') 
 
+```
