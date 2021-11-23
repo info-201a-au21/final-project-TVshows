@@ -7,14 +7,14 @@ output: html_document
 
 ```{r setup, include=FALSE}
 source("analysis.R")
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE)
 ```
 
 # Introduction
 
    We are interested in the quality and popularity of TV shows in the mainstreaming platforms, including Netflix, Prime Video, Hulu, and Disney+.
 Ruchi Bhatia collects the one of the data sets we use to analyze, and the methodology that she uses is IMDb (data was scraped using Beautiful Soup). Neelima Jauhari collects the other one, and the source is Amazon Prime website.
-During the pandemic period, people stay at home and do the limited activity. A tremendous amount of people tend to watch TV shows during quarantine. Streaming platforms have increasing subscribers. We want to analyze the dataset from the leading streaming platforms (Netflix, Prime Video, Hulu, and Disney+) to help people find out the most recommended one for people who have diverse needs.
+During the pandemic period, people stay at home and do the limited activity. A tremendous amount of people tend to watch TV shows during quarantine. Streaming platforms have increasing subscribers. 
 
 
 # Summary：
@@ -26,14 +26,26 @@ We would like to recommend platforms based on people’s needs.
 
 3. __Netflix__ has 317 TV shows in 2019, and it is the largest number in a year among these 4 platforms.
 
-4. People who want to watch high-score TV shows should subscribe __XXX__. This platform bought __the most of IMDb-rating-9.0 TV shows.__
+4. People who want to watch high-score TV shows should subscribe __Netflix__. This platform bought __the most of IMDb-rating-9.0 TV shows.__
 
 5.  __English shows__ occupied __the largest proportion__ on Prime platform, then is the __Hindi__, __Japanese__, and other languages. 
 
-#Table
-Purpose: 
+# Table: TV Shows on Netflix, Prime Video, Hulu, and Disney+
+__Purpose: __ By collecting these useful data, we can explore which one is the best option for people who have different needs.
 
-# Chart 1 
+__Insight: __ We want to analyze the data set from the leading streaming platforms (Netflix, Prime Video, Hulu, and Disney+) to help people find out the most recommended one for people who have diverse needs.
+
+
+```{r table, echo=FALSE}
+TV_show_4 %>% select(Title, Year, Age, IMDb, Netflix, Hulu, Prime.Video, Disney.) %>%
+  group_by(Year) %>%
+  kable(caption = 'Table: TV Shows (Netflix, Hulu, Prime, Disney)') %>%
+  kable_styling(bootstrap_options = c('striped', 'hover', 'responsive', 'condensed'))
+
+
+```
+
+# Chart 1: TV Shows Amount
 __Purpose: __
 Figure out the trend of the number of TV shows in every single year.
 
@@ -43,19 +55,22 @@ The number of TV shows of all these four platforms are keep increasing from 1970
 ggplotly(year_line_plot)
 ```
 
-# Chart 2
+# Chart 2: IMDb 9.0+ TV Shows Distribution
 __Purpose: __
 Figure out the distrubution of TV shows which IMDb ratings higher than 9.0.
-__Insight: __ 
-```{r}
 
+__Insight: __ 
+We recommend people who want to watch high score TV shows to subscribe Netflix which has 15 high score ones; but Hulu also has 13, and Prime has 12. Therefore, these three platforms are good choices for customers.
+```{r}
+ggplotly(bar_IMDb)
 ```
 
 
 
-# Chart 3
+# Chart 3 Distribution of Different Languages On Prime
 __Purpose: __ 
 Figure out the proportion of different languages on Prime platform.
+
 __Insight: __
 In this part, TV shows on Prime are the ones we focus on. Prime includes various TV shows for different languages. __English shows(79%) become the largest proportion__, then is the __Hindi(9.9%)__, __Japanese(3.3%)__, etc. As a result, __Prime__ is a good choice if you are interested in watching various language TV shows.
 ```{r}
@@ -66,10 +81,6 @@ lang_pie <- ggplot(prime_lang, aes(x = "", y = lang_prop, fill = Language)) +
   labs(title = "Language Proportions", y = "", x = "") +
   scale_fill_brewer(palette="Paired")
 lang_pie
+  
 ```
 
-```{r table. echo=FALSE}
-TV_show_4 %>% select(Title, Year, Age, IMDb, Netflix, Hulu, Prime.Video, Disney.) %>%
-  kable(caption = 'Table: TV Shows (Netflix, Hulu, Prime, Disney)') 
-
-```
