@@ -6,11 +6,10 @@ library(lintr)
 library(base)
 library("ggplot2")
 library(ggrepel)
-
+library(knitr)
 
 # Load datasets
 TV_show_4 <- read.csv("tv_shows.csv")
-View(TV_show_4)
 
 # Which platform includes the largest amount of TV shows? 
 ## Netflix(1971) has the largest amount of TV shows
@@ -67,14 +66,6 @@ all_underage <- rbind(netflix_underage, hulu_underage, prime_underage, disney_un
 all_underage_name <- c("Netflix", "Hulu", "Prime Video", "Disney")
 colnames(all_underage) <- "value"
 
-ggplot(all_underage, aes(x = all_underage_name, y = all_underage$value)) +
-  labs(title= "The most recommended platform for a family", 
-       y="amount of underage TV shows", x = "Platforms") +
-  ylim(0, 1500) +
-  geom_bar(stat = "identity", position = "dodge") +
-  scale_fill_brewer(palette="Paired") +
-  geom_text(aes(label = mean), position = dodgewidth, vjust = 1.6, 
-            color = "white", size = 2.5)
 
 # Which platform has the most enormous amount of TV shows (in a year)?
 year_Neflix <- TV_show_4 %>%
