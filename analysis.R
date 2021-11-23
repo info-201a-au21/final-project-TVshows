@@ -1,6 +1,15 @@
 library(dplyr)
+<<<<<<< HEAD
 library(ggplot2)
 library(plotly)
+=======
+library(tidyverse)
+library(lintr)
+library(base)
+library("ggplot2")
+library(ggrepel)
+
+>>>>>>> 96e82e6dc4adafe19ed14ce2383f89b1cebefc41
 
 # Load datasets
 TV_show_4 <- read.csv("tv_shows.csv")
@@ -32,8 +41,46 @@ amount_each_platform <- cbind(amount_Disney., amount_Hulu, amount_Netflix, amoun
 amount_each_platform$Max <- max(amount_each_platform[1:4])
 
 # Which platform is the most recommended for a family, which have children to subscribe? 
-## bar plot
+## bar plot (blank in Age didn't remove yet)
+netflix_underage <- TV_show_4 %>%
+  filter(Age != "18+", na.rm = TRUE) %>%
+  filter(Age != "all", na.rm = TRUE) %>%
+  filter(Netflix == 1, na.rm = TRUE) %>%
+  nrow()
 
+hulu_underage <- TV_show_4 %>%
+  filter(Age != "18+", na.rm = TRUE) %>%
+  filter(Age != "all", na.rm = TRUE) %>%
+  filter(Hulu == 1, na.rm = TRUE) %>%
+  nrow()
+
+prime_underage <- TV_show_4 %>%
+  filter(Age != "18+", na.rm = TRUE) %>%
+  filter(Age != "all", na.rm = TRUE) %>%
+  filter(Prime.Video == 1, na.rm = TRUE) %>%
+  nrow()
+
+<<<<<<< HEAD
+=======
+disney_underage <- TV_show_4 %>%
+  filter(Age != "18+", na.rm = TRUE) %>%
+  filter(Age != "all", na.rm = TRUE) %>%
+  filter(Disney. == 1, na.rm = TRUE) %>%
+  nrow()
+  
+all_underage <- rbind(netflix_underage, hulu_underage, prime_underage, disney_underage)
+all_underage_name <- c("Netflix", "Hulu", "Prime Video", "Disney")
+colnames(all_underage) <- "value"
+
+ggplot(all_underage, aes(x = all_underage_name, y = all_underage$value)) +
+  labs(title= "The most recommended platform for a family", 
+       y="amount of underage TV shows", x = "Platforms") +
+  ylim(0, 1500) +
+  geom_bar(stat = "identity", position = "dodge") +
+  scale_fill_brewer(palette="Paired") +
+  geom_text(aes(label = mean), position = dodgewidth, vjust = 1.6, 
+            color = "white", size = 2.5)
+>>>>>>> 96e82e6dc4adafe19ed14ce2383f89b1cebefc41
 # Which platform has the most enormous amount of TV shows (in a year)?
 year_Neflix <- TV_show_4 %>%
   group_by(Year) %>%
@@ -73,8 +120,10 @@ year_line_plot <- ggplot(data = year_aggregate, aes(x = Year)) +
 
 ggplotly(year_line_plot)
 
+
 # Which platform includes largest amount of TV shows with IMDb >  9.0?
 
+<<<<<<< HEAD
 sapply(data.frame(TV_show_4$IMDb), as.numeric)
 (average_IMDb_2013 <- TV_show_4 %>%
     group_by(Year) %>%
@@ -87,10 +136,19 @@ sapply(data.frame(TV_show_4$IMDb), as.numeric)
     summarise(IMDb = mean(IMDb, na.rm = TRUE)))
 
 diff_18_13 <- average_IMDb_2018 - average_IMDb_2013
+=======
+# How does the average IMDb rate changed over N year? line/ scatterplot
+(average_IMDb_2013 <- TV_show_4 %>%
+    group_by(Year) %>%
+    filter(Year == 2013) %>%
+    summarise(IMDb = mean(IMDb, na.rm = T)))
+
+>>>>>>> 96e82e6dc4adafe19ed14ce2383f89b1cebefc41
 
 # Which platform has most TV show original?
 
 # Top used language? 
+<<<<<<< HEAD
 library(scales)
 library(RColorBrewer)
 Prime_data <- read.csv("Prime TV Shows Data set.csv")
@@ -116,3 +174,6 @@ lang_pie <- ggplot(prime_lang, aes(x = "", y = lang_prop, fill = Language)) +
   scale_fill_brewer(palette="Paired")
 lang_pie
   
+=======
+# Pie chart
+>>>>>>> 96e82e6dc4adafe19ed14ce2383f89b1cebefc41
