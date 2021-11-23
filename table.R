@@ -1,6 +1,4 @@
 library(knitr)
-library(kableExtra)
 
 TV_show_4 %>% select(Title, Year, Age, IMDb, Netflix, Hulu, Prime.Video, Disney.) %>%
-  kable(caption = 'Table: TV Shows (Netflix, Hulu, Prime, Disney)') %>%
-  kable_styling(bootstrap_options = c('striped', 'hover', 'responsive', 'condensed'))
+  kable(caption = 'Table: TV Shows (Netflix, Hulu, Prime, Disney)')
