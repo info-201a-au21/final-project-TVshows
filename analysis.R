@@ -11,8 +11,7 @@ library(knitr)
 # Load datasets
 TV_show_4 <- read.csv("tv_shows.csv")
 
-# Which platform includes the largest amount of TV shows? 
-## Netflix(1971) has the largest amount of TV shows
+#1. Which platform includes the largest amount of TV shows? 
 #Netflix
 (amount_Netflix <- TV_show_4 %>%
   filter(Netflix == 1) %>%
@@ -36,47 +35,48 @@ TV_show_4 <- read.csv("tv_shows.csv")
 amount_each_platform <- cbind(amount_Disney., amount_Hulu, amount_Netflix, amount_Prime.Video)
 amount_each_platform$Max <- max(amount_each_platform[1:4])
 
-# Which platform is the most recommended for a family, which have children to subscribe? 
+# 2. Which platform is the most recommended for a family, which have children to subscribe? 
 ## bar plot (blank in Age didn't remove yet)
-netflix_underage <- TV_show_4 %>%
+(netflix_underage <- TV_show_4 %>%
   filter(Age != "18+", na.rm = TRUE) %>%
   filter(Age != "all", na.rm = TRUE) %>%
   filter(Netflix == 1, na.rm = TRUE) %>%
   nrow()
-
-hulu_underage <- TV_show_4 %>%
+)
+(hulu_underage <- TV_show_4 %>%
   filter(Age != "18+", na.rm = TRUE) %>%
   filter(Age != "all", na.rm = TRUE) %>%
   filter(Hulu == 1, na.rm = TRUE) %>%
   nrow()
-
-prime_underage <- TV_show_4 %>%
+)
+(prime_underage <- TV_show_4 %>%
   filter(Age != "18+", na.rm = TRUE) %>%
   filter(Age != "all", na.rm = TRUE) %>%
   filter(Prime.Video == 1, na.rm = TRUE) %>%
-  nrow()
+  nrow())
 
-disney_underage <- TV_show_4 %>%
+(disney_underage <- TV_show_4 %>%
   filter(Age != "18+", na.rm = TRUE) %>%
   filter(Age != "all", na.rm = TRUE) %>%
   filter(Disney. == 1, na.rm = TRUE) %>%
-  nrow()
+  nrow())
   
 all_underage <- rbind(netflix_underage, hulu_underage, prime_underage, disney_underage)
 all_underage_name <- c("Netflix", "Hulu", "Prime Video", "Disney")
 colnames(all_underage) <- "value"
 
 
-# Which platform has the most enormous amount of TV shows (in a year)?
-year_Neflix <- TV_show_4 %>%
+
+#3. Which platform has the most enormous amount of TV shows (in a year)?
+(year_Neflix <- TV_show_4 %>%
   group_by(Year) %>%
   filter(Netflix == 1) %>%
   summarise(netflix_per_year = sum(Netflix))
-
-year_Hulu <- TV_show_4 %>%
+)
+(year_Hulu <- TV_show_4 %>%
   group_by(Year) %>%
   filter(Hulu == 1) %>%
-  summarise(hulu_per_year = sum(Hulu))
+  summarise(hulu_per_year = sum(Hulu)))
 
 year_Prime <- TV_show_4 %>%
   group_by(Year) %>%
@@ -107,7 +107,7 @@ year_line_plot <- ggplot(data = year_aggregate, aes(x = Year)) +
 ggplotly(year_line_plot)
 
 
-# Which platform includes largest amount of TV shows with IMDb >  9.0?
+#4. Which platform includes largest amount of TV shows with IMDb >  9.0?
 
 
 TV_show_4$IMDb <- sub("/10", "", TV_show_4$IMDb)
@@ -145,16 +145,8 @@ bar_IMDb <- ggplot(data = new_IMDb) +
   
 ggplotly(bar_IMDb)
 
-# How does the average IMDb rate changed over N year? line/ scatterplot
-(average_IMDb_2013 <- TV_show_4 %>%
-    group_by(Year) %>%
-    filter(Year == 2013) %>%
-    summarise(IMDb = mean(IMDb, na.rm = T)))
 
-
-# Which platform has most TV show original?
-
-# Top used language? 
+#5. Top used language? 
 library(scales)
 library(RColorBrewer)
 Prime_data <- read.csv("Prime TV Shows Data set.csv")
@@ -184,8 +176,4 @@ lang_pie
 # Pie chart
 
 
-# what platform has the highest average IMDb rating.
-
-highest_ave <- TV_show_4 %>%
-  group_by()
 

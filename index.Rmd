@@ -7,23 +7,65 @@ output: html_document
 
 ```{r setup, include=FALSE}
 source("analysis.R")
-
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Introduction
+# Introduction
+
+   We are interested in the quality and popularity of TV shows in the mainstreaming platforms, including Netflix, Prime Video, Hulu, and Disney+.
+Ruchi Bhatia collects the one of the data sets we use to analyze, and the methodology that she uses is IMDb (data was scraped using Beautiful Soup). Neelima Jauhari collects the other one, and the source is Amazon Prime website.
+During the pandemic period, people stay at home and do the limited activity. A tremendous amount of people tend to watch TV shows during quarantine. Streaming platforms have increasing subscribers. We want to analyze the dataset from the leading streaming platforms (Netflix, Prime Video, Hulu, and Disney+) to help people find out the most recommended one for people who have diverse needs.
 
 
+# Summary：
+We would like to recommend platforms based on people’s needs.
 
-```{r cars}
+1. If people prefer to choose a platform that contains the largest amount of TV shows, we will recommend they subscribe to __Netflix__. __Netflix have 1971 TV shows__ from 1970 to 2020, and the least one is Disney+ which just have 351.
+
+2. For a family who has one or more children, __the Prime__ will be the best one. Our analysis shows that Prime have __1494 which is the largest number of TV shows which are safe and appropriate for children among these platform__. All of the family members can enjoy these TV shows together.
+
+3. __Netflix__ has 317 TV shows in 2019, and it is the largest number in a year among these 4 platforms.
+
+4. People who want to watch high-score TV shows should subscribe __XXX__. This platform bought __the most of IMDb-rating-9.0 TV shows.__
+
+5.  __English shows__ occupied __the largest proportion__ on Prime platform, then is the __Hindi__, __Japanese__, and other languages. 
+
+#Table
+Purpose: 
+
+# Chart 1 
+__Purpose: __
+Figure out the trend of the number of TV shows in every single year.
+
+__Insight: __
+The number of TV shows of all these four platforms are keep increasing from 1970, and the peak is around 2018 and 2020. __Netflix__ has 317 TV shows in 2019, and it is the largest number in a year among these 4 platforms.
+```{r}
+ggplotly(year_line_plot)
+```
+
+# Chart 2
+__Purpose: __
+Figure out the distrubution of TV shows which IMDb ratings higher than 9.0.
+__Insight: __ 
+```{r}
 
 ```
 
-## Including Plots
 
 
-```{r pressure, echo=FALSE}
-
+# Chart 3
+__Purpose: __ 
+Figure out the proportion of different languages on Prime platform.
+__Insight: __
+In this part, TV shows on Prime are the ones we focus on. Prime includes various TV shows for different languages. __English shows(79%) become the largest proportion__, then is the __Hindi(9.9%)__, __Japanese(3.3%)__, etc. As a result, __Prime__ is a good choice if you are interested in watching various language TV shows.
+```{r}
+lang_pie <- ggplot(prime_lang, aes(x = "", y = lang_prop, fill = Language)) +
+  geom_bar(stat = "identity") +
+  coord_polar("y", start = 0) +
+  geom_text(aes(label = paste0(lang_prop)), position = position_stack(vjust=0.5)) +
+  labs(title = "Language Proportions", y = "", x = "") +
+  scale_fill_brewer(palette="Paired")
+lang_pie
 ```
 
 ```{r table, echo=FALSE}
