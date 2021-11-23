@@ -42,7 +42,6 @@ TV_show_4 %>% select(Title, Year, Age, IMDb, Netflix, Hulu, Prime.Video, Disney.
   kable(caption = 'Table: TV Shows (Netflix, Hulu, Prime, Disney)') %>%
   kable_styling(bootstrap_options = c('striped', 'hover', 'responsive', 'condensed'))
 
-
 ```
 
 # Chart 1: TV Shows Amount
@@ -73,7 +72,7 @@ Figure out the proportion of different languages on Prime platform.
 
 __Insight: __
 In this part, TV shows on Prime are the ones we focus on. Prime includes various TV shows for different languages. __English shows(79%) become the largest proportion__, then is the __Hindi(9.9%)__, __Japanese(3.3%)__, etc. As a result, __Prime__ is a good choice if you are interested in watching various language TV shows.
-```{r}
+```{r chart3, echo=FALSE}
 lang_pie <- ggplot(prime_lang, aes(x = "", y = lang_prop, fill = Language)) +
   geom_bar(stat = "identity") +
   coord_polar("y", start = 0) +
