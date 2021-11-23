@@ -4,12 +4,43 @@ library(plotly)
 library(tidyverse)
 library(lintr)
 library(base)
-library("ggplot2")
 library(ggrepel)
 library(knitr)
+library(kableExtra)
+
+# Introduction
+
+#We are interested in the quality and popularity of TV shows in the mainstreaming platforms, including Netflix, Prime Video, Hulu, and Disney+.
+#Ruchi Bhatia collects the one of the data sets we use to analyze, and the methodology that she uses is IMDb (data was scraped using Beautiful Soup). Neelima Jauhari collects the other one, and the source is Amazon Prime website.
+#During the pandemic period, people stay at home and do the limited activity. A tremendous amount of people tend to watch TV shows during quarantine. Streaming platforms have increasing subscribers. 
+
+
+# Summary：
+#We would like to recommend platforms based on people’s needs.
+
+#1. If people prefer to choose a platform that contains the largest amount of TV shows, we will recommend they subscribe to __Netflix__. __Netflix have 1971 TV shows__ from 1970 to 2020, and the least one is Disney+ which just have 351.
+
+#2. For a family who has one or more children, __the Prime__ will be the best one. Our analysis shows that Prime have __1494 which is the largest number of TV shows which are safe and appropriate for children among these platform__. All of the family members can enjoy these TV shows together.
+
+#3. __Netflix__ has 317 TV shows in 2019, and it is the largest number in a year among these 4 platforms.
+
+#4. People who want to watch high-score TV shows should subscribe __Netflix__. This platform bought __the most of IMDb-rating-9.0 TV shows.__
+
+#5.  __English shows__ occupied __the largest proportion__ on Prime platform, then is the __Hindi__, __Japanese__, and other languages. 
+
+
+
 
 # Load datasets
 TV_show_4 <- read.csv("tv_shows.csv")
+
+
+##TABLE:
+
+TV_show_4 %>% select(Title, Year, Age, IMDb, Netflix, Hulu, Prime.Video, Disney.) %>%
+  group_by(Year) %>%
+  kable(caption = 'Table: TV Shows (Netflix, Hulu, Prime, Disney)') %>%
+  kable_styling(bootstrap_options = c('striped', 'hover', 'responsive', 'condensed'))
 
 #1. Which platform includes the largest amount of TV shows? 
 #Netflix
@@ -146,7 +177,7 @@ bar_IMDb <- ggplot(data = new_IMDb) +
 ggplotly(bar_IMDb)
 
 
-#5. Top used language? 
+#5. Which is the top used language? 
 library(scales)
 library(RColorBrewer)
 Prime_data <- read.csv("Prime TV Shows Data set.csv")
