@@ -3,12 +3,10 @@ library(ggplot2)
 library(plotly)
 
 # Load datasets
-
 TV_show_4 <- read.csv("tv_shows.csv")
 View(TV_show_4)
 
 # Calculated the amount of TV shows that are released in each year
-
 year_Neflix <- TV_show_4 %>%
   group_by(Year) %>%
   filter(Netflix == 1) %>%
@@ -37,7 +35,6 @@ year_aggregate <- year_Neflix %>%
 year_aggregate[is.na.data.frame(year_aggregate)] <- 0
 
 # Creating the line chart
-
 color <- c("netflix" = "red", "hulu" = "green", "prime" = "blue", "disney" = "purple")
 year_line_plot <- ggplot(data = year_aggregate, aes(x = Year)) +
   geom_line(aes(y = netflix_per_year, color = "netflix")) +
