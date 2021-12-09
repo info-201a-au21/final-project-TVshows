@@ -11,62 +11,7 @@ library(ggrepel)
 # Load datasets
 TV_show_4 <- read.csv("tv_shows.csv")
 
-
-#1. Which platform includes the largest amount of TV shows? 
-#Netflix
-(amount_Netflix <- TV_show_4 %>%
-    filter(Netflix == 1) %>%
-    summarise(sum_Netflix = sum(Netflix)))
-
-#Hulu
-(amount_Hulu <- TV_show_4 %>%
-    filter(Hulu == 1) %>%
-    summarise(sum_Hulu = sum(Hulu)))
-
-#Prime.Video
-(amount_Prime.Video <- TV_show_4 %>%
-    filter(Prime.Video == 1) %>%
-    summarise(sum_Prime.Video = sum(Prime.Video)))
-
-#Disney.
-(amount_Disney. <- TV_show_4 %>%
-    filter(Disney. == 1) %>%
-    summarise(sum_Disney. = sum(Disney.)))
-
-amount_each_platform <- cbind(amount_Disney., amount_Hulu, amount_Netflix, amount_Prime.Video)
-amount_each_platform$Max <- max(amount_each_platform[1:4])
-
-# 2. Which platform is the most recommended for a family, which have children to subscribe? 
-## bar plot (blank in Age didn't remove yet)
-(netflix_underage <- TV_show_4 %>%
-    filter(Age != "18+", na.rm = TRUE) %>%
-    filter(Age != "all", na.rm = TRUE) %>%
-    filter(Netflix == 1, na.rm = TRUE) %>%
-    nrow()
-)
-(hulu_underage <- TV_show_4 %>%
-    filter(Age != "18+", na.rm = TRUE) %>%
-    filter(Age != "all", na.rm = TRUE) %>%
-    filter(Hulu == 1, na.rm = TRUE) %>%
-    nrow()
-)
-(prime_underage <- TV_show_4 %>%
-    filter(Age != "18+", na.rm = TRUE) %>%
-    filter(Age != "all", na.rm = TRUE) %>%
-    filter(Prime.Video == 1, na.rm = TRUE) %>%
-    nrow())
-
-(disney_underage <- TV_show_4 %>%
-    filter(Age != "18+", na.rm = TRUE) %>%
-    filter(Age != "all", na.rm = TRUE) %>%
-    filter(Disney. == 1, na.rm = TRUE) %>%
-    nrow())
-
-all_underage <- rbind(netflix_underage, hulu_underage, prime_underage, disney_underage)
-all_underage_name <- c("Netflix", "Hulu", "Prime Video", "Disney")
-colnames(all_underage) <- "value"
-
-
+# barchart
 # 9.0+
 TV_show_4$IMDb <- sub("/10", "", TV_show_4$IMDb)
 IMDb_Netflix_9.0 <- TV_show_4 %>%
@@ -138,21 +83,46 @@ overview_IMDb_7.0 <- cbind(IMDb_Netflix_7.0, IMDb_Hulu_7.0, IMDb_Disney_7.0, IMD
 new_IMDb_9.0 <- as.data.frame(t(overview_IMDb_9.0))
 new_IMDb_8.0 <- as.data.frame(t(overview_IMDb_8.0))
 new_IMDb_7.0 <- as.data.frame(t(overview_IMDb_7.0))
-# colnames(new_IMDb_9.0) <- c("< 0.7", "0.7 - 0.9", "0.9+")
-# colnames(new_IMDb_8.0) <- c("< 0.7", "0.7 - 0.9", "0.9+")
-# colnames(new_IMDb_7.0) <- c("< 0.7", "0.7 - 0.9", "0.9+")
 new_IMDb_all <- cbind(new_IMDb_7.0, new_IMDb_8.0, new_IMDb_9.0)
 colnames(new_IMDb_all) <- c("< 0.7", "0.7 - 0.9", "0.9+")
 rownames(new_IMDb_all) <- c("Netflix", "Hulu", "Disney+", "Prime")
 x_axis <- c("Netflix", "Hulu", "Disney+", "Prime")
 
+# line chart
+(year_Neflix <- TV_show_4 %>%
+    group_by(Year) %>%
+    filter(Netflix == 1) %>%
+    summarise(netflix_per_year = sum(Netflix))
+)
 
+(year_Hulu <- TV_show_4 %>%
+    group_by(Year) %>%
+    filter(Hulu == 1) %>%
+    summarise(hulu_per_year = sum(Hulu)))
+
+year_Prime <- TV_show_4 %>%
+  group_by(Year) %>%
+  filter(Prime.Video == 1) %>%
+  summarise(prime_per_year = sum(Prime.Video))
+
+year_Disney <- TV_show_4 %>%
+  group_by(Year) %>%
+  filter(Disney. == 1) %>%
+  summarise(disney_per_year = sum(Disney.))
+
+year_aggregate <- year_Neflix %>%
+  full_join(year_Hulu, by = "Year") %>%
+  full_join(year_Prime, by = "Year") %>%
+  full_join(year_Disney, by = "Year") %>%
+  filter(str_length(Year) == 4)
+
+year_aggregate[is.na.data.frame(year_aggregate)] <- 0
 
 library(tidyverse)
 library(scales)
 library(RColorBrewer)
 
-## read data
+# pie chart
 Prime_data <- read.csv("Prime TV Shows Data set.csv", stringsAsFactors = F)
 prime_lang <- Prime_data %>%
   group_by(Language) %>%
@@ -189,11 +159,21 @@ server <- function(input, output) {
       labs(x = "Platforms", 
            y = "Amount of TV shows with 9.0 +", 
            title = "IMDb Distribution")
-    #bar_plotly <- ggplotly(bar_IMDb)
     return(bar_IMDb)
   })
   
-  output$
-  
- 
+  output$line <- renderPlot({
+    plot_data <- year_aggregate %>%
+      filter(Year > input$year[1], Year < input$year[2])
+    
+    linear <- ggplot(data = plot_data, aes(x = "Year")) +
+      geom_line(aes(y = netflix_per_year, color = "blue")) +
+      geom_line(aes(y = hulu_per_year, color = "red")) + 
+      geom_line(aes(y = prime_per_year, color = "green")) +
+      geom_line(aes(y = disney_per_year, color = "yellow")) +
+      labs(x = input$year, y = "Number of TV Shows", 
+           title = "The Amount of TV Shows on 4 Platforms Each Year")
+      # scale_color_manual(values = color)
+    return(linear)
+  })
 }
