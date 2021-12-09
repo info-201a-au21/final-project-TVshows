@@ -40,15 +40,8 @@ bar_panel <- tabPanel(
 )
 
 #line chart
-year_range <- as.numeric(range(year_aggregate$Year)) 
 line_sidebar_content <- sidebarPanel(
-  sliderInput(
-    "year",
-    label = "Year", 
-    min = year_range[1],
-    max = year_range[2], 
-    value = c(2000,2020)
-  )
+  checkboxInput("smooth", label = strong("Show Trendline"), value = T)
 )
 
 line_main_content <- mainPanel(
