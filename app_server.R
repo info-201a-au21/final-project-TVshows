@@ -84,7 +84,7 @@ prime_lang$lang_prop <- percent(prime_lang$lang_prop, accuracy = 0.1)
 
 ## sever
 server <- function(input, output) { 
-  output$plot <- renderPlot({
+  output$pie <- renderPlot({
     lang_pie <- ggplot(prime_lang, aes(x = "", y = lang_prop, fill = Language)) +
       geom_bar(stat = "identity") +
       labs(title = "Language Proportions", y = "", x = "") +
@@ -95,7 +95,6 @@ server <- function(input, output) {
         labs(title = "Language Proportions", y = "", x = "") +
         scale_fill_brewer(palette="Paired")
     }
-    
-    lang_pie 
+    return(lang_pie) 
   })
 }

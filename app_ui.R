@@ -62,12 +62,12 @@ bar_chart_tab <- tabPanel(
 # Pie Chart
 pie_sidebar_content <- sidebarPanel(
   checkboxInput(inputId = "data", 
-                label = strong("show data"), 
+                label = strong("show data and change color"), 
                 value = TRUE)
 )
 
 pie_main_content <- mainPanel(
-  plotlyOutput(outputId = "pie")
+  plotOutput(outputId = "pie")
 )
 
 pie_chart_tab <- tabPanel(
@@ -83,9 +83,12 @@ pie_chart_tab <- tabPanel(
 # Introductory
 intro_tab <- tabPanel(
   "Intro",
+  tags$img(src = "Netflix-Amazon-Prime-Hulu-Disney-Plus-Logos.png",
+           width = "100px", height = "100px"),
   fluidPage(
     p(paste("blah blah blah"))
   )
+  
 )
 
 # Conclusion
