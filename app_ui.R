@@ -2,22 +2,31 @@
 library(shiny)
 library(plotly)
 
-## Chart
-#pie
-pie_sidebar_content <- sidebarPanel(
-  checkboxInput("data", label = strong("show data"), value = TRUE)
+# Linear Plot
+year_range <- as.numeric(range(year_aggregate$Year)) 
+linear_chart_sidebar <- sidebarPanel(
+  sliderInput(
+    inputId = "year",
+    label = "Year Range", 
+    min = year_range[1],
+    max = year_range[2], 
+    value = c(2000,2020)
+  )
 )
 
-pie_main_content <- mainPanel(
-  plotOutput("pie")
+linear_chart_main <- mainPanel(
+  plotlyOutput(outputId = "line")
 )
 
-pie_panel <- tabPanel(
-  "Pie chart",
-  titlePanel("Pie chart"), 
+linear_chart_tab <- tabPanel(
+  "Linear Chart Visulization",
+  titlePanel("Linear chart"),
   sidebarLayout(
-    pie_sidebar_content,
-    pie_main_content
+    linear_chart_sidebar,
+    linear_chart_main,
+  ),
+  fluidPage(
+    p("some words")
   )
 )
 
@@ -57,11 +66,32 @@ line_panel <- tabPanel(
   )
 )
 
+# Pie Chart
+pie_sidebar_content <- sidebarPanel(
+  checkboxInput(inputId = "data", 
+                label = strong("show data and change color"), 
+                value = TRUE)
+)
+
+pie_main_content <- mainPanel(
+  plotOutput(outputId = "pie")
+)
+
+pie_chart_tab <- tabPanel(
+  "Pie Chart Visualization",
+  titlePanel("Pie chart"), 
+  sidebarLayout(
+    pie_sidebar_content,
+    pie_main_content
+  )
+)
+
+
 # Introductory
 intro_tab <- tabPanel(
   "Introduction",
   titlePanel("Introduction"), 
-    h3("Team Member: Helen Lei, Kelsey Li, Scarlet Zheng"),
+  h3("Team Member: Helen Lei, Kelsey Li, Scarlet Zheng"),
   fluidPage(
     img("", src = "https://editor.analyticsvidhya.com/uploads/58713tvshows1.jpeg",
         height='340px',width='500px'),
@@ -86,8 +116,8 @@ intro_tab <- tabPanel(
     img("", src = "https://img.wattpad.com/883b5477c7bfcec4cb342f35a8c42e4b6e2c196c/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f776174747061642d6d656469612d736572766963652f53746f7279496d6167652f56475136637557683750675756773d3d2d3239372e313464643463303262383265643764323435383934363733393836322e6a7067",
         height='500px',width='492px')
   )
-  
 )
+
 
 # Conclusion
 conclude_tab <- tabPanel(
@@ -122,7 +152,7 @@ conclude_tab <- tabPanel(
       in a platform builds a bridge for globalization."),
     br(),
     img("", src = "https://scontent-sea1-1.xx.fbcdn.net/v/t1.6435-9/125433906_2062027213932735_4872550311353998669_n.jpg?_nc_cat=104&ccb=1-5&_nc_sid=8bfeb9&_nc_ohc=_F8xsBW9eMEAX-Lt2gD&_nc_oc=AQm1wJlERariU2ZUOz2FJZNkAIYUDiO6eNxeRmIChikwa3eklQ5qHG2BlihkGY4D6TJ6FVKdMDJhexuHHtOIyn18&_nc_ht=scontent-sea1-1.xx&oh=a2f127b1d47bd9acb7ddd29e9096aa48&oe=61D699CD",
-          height='400px',width='400px')
+        height='400px',width='400px')
   )
 )
 
@@ -132,6 +162,6 @@ ui <- navbarPage(
   intro_tab,
   line_panel,
   bar_panel,
-  pie_panel,
+  pie_chart_tab,
   conclude_tab
 )

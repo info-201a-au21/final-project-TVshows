@@ -3,16 +3,16 @@ library(shiny)
 library(plotly)
 library(ggplot2)
 library(dplyr)
+library(tidyverse)
 library(base)
 library(ggrepel)
-library(tidyverse)
-library(scales)
-library(RColorBrewer)
+library(stats)
+library(graphics)
 
 
 ## read data
 # pie chart
-Prime_data <- read.csv("Prime TV Shows Data set.csv", stringsAsFactors = F)
+Prime_data <- read.csv("https://www.kaggle.com/nilimajauhari/amazon-prime-tv-shows?select=Prime+TV+Shows+Data+set.csv", stringsAsFactors = F)
 prime_lang <- Prime_data %>%
   group_by(Language) %>%
   tally() %>%
@@ -24,7 +24,7 @@ prime_lang <- Prime_data %>%
 prime_lang$lang_prop <- percent(prime_lang$lang_prop, accuracy = 0.1)
 
 # bar chart
-TV_show_4 <- read.csv("tv_shows.csv")
+TV_show_4 <- read.csv("https://github.com/info-201a-au21/final-project-TVshows/blob/main/tv_shows.csv")
 TV_show_4$IMDb <- sub("/10", "", TV_show_4$IMDb)
 IMDb_Netflix_9.0 <- TV_show_4 %>%
   filter(IMDb > 9.0, na.rm = TRUE,
@@ -49,6 +49,8 @@ IMDb_Disney_9.0 <- TV_show_4 %>%
 overview_IMDb <- cbind(IMDb_Netflix_9.0, IMDb_Hulu_9.0, IMDb_Disney_9.0, IMDb_Prime_9.0)
 new_IMDb <- t(overview_IMDb)
 new_IMDb <- data.frame(names = row.names(new_IMDb), new_IMDb)
+
+
 
 # line chart
 (year_Neflix <- TV_show_4 %>%
@@ -84,7 +86,6 @@ color <- c("netflix" = "red", "hulu" = "green", "prime" = "blue", "disney" = "pu
 
 ## sever
 server <- function(input, output) { 
-  # pie chart
   output$pie <- renderPlot({
     lang_pie <- ggplot(prime_lang, aes(x = "", y = lang_prop, fill = Language)) +
       geom_bar(stat = "identity") +
@@ -96,8 +97,7 @@ server <- function(input, output) {
         labs(title = "Language Proportions", y = "", x = "") +
         scale_fill_brewer(palette="Paired")
     }
-    
-    lang_pie 
+    lang_pie
   })
   
   # bar chart
@@ -120,16 +120,15 @@ server <- function(input, output) {
     bar_IMDb
   })
   
-  # line chart
   output$line <- renderPlot({
-      p <- ggplot(data = year_aggregate, 
-                  mapping = aes(x = Year, y = netflix_per_year, color = "netflix")) +
-        geom_point()
-        labs(x = "Year", y = "Number of TV Shows", title = "The Amount of TV Shows on 4 Platforms Each Year") +
-        scale_color_manual(values = color)
-      if (input$smooth) {
-        p <- p + geom_smooth(se = F)
-      }
-      p
+    p <- ggplot(data = year_aggregate, 
+                mapping = aes(x = Year, y = netflix_per_year, color = "netflix")) +
+      geom_point()
+    labs(x = "Year", y = "Number of TV Shows", title = "The Amount of TV Shows on 4 Platforms Each Year") +
+      scale_color_manual(values = color)
+    if (input$smooth) {
+      p <- p + geom_smooth(se = F)
+    }
+    p
   })
 }
