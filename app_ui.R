@@ -82,7 +82,7 @@ pie_chart_tab <- tabPanel(
 
 # Introductory
 intro_tab <- tabPanel(
-  "Intro",
+  "Introduction",
   fluidPage(
     p(paste("blah blah blah"))
   )
