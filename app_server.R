@@ -8,11 +8,15 @@ library(base)
 library(ggrepel)
 library(stats)
 library(graphics)
-
+library(RColorBrewer)
+library(kableExtra)
+library(scales)
+library(lintr)
+library(knitr)
 
 ## read data
 # pie chart
-Prime_data <- read.csv("https://www.kaggle.com/nilimajauhari/amazon-prime-tv-shows?select=Prime+TV+Shows+Data+set.csv", stringsAsFactors = F)
+Prime_data <- read.csv("https://raw.githubusercontent.com/info-201a-au21/final-project-TVshows/main/file/Prime%20TV%20Shows%20Data%20set.csv?token=AV53JLGVYE76TWRAVWDTTIDBXPDCC", stringsAsFactors = F)
 prime_lang <- Prime_data %>%
   group_by(Language) %>%
   tally() %>%
@@ -24,7 +28,7 @@ prime_lang <- Prime_data %>%
 prime_lang$lang_prop <- percent(prime_lang$lang_prop, accuracy = 0.1)
 
 # bar chart
-TV_show_4 <- read.csv("https://github.com/info-201a-au21/final-project-TVshows/blob/main/tv_shows.csv")
+TV_show_4 <- read.csv("https://raw.githubusercontent.com/info-201a-au21/final-project-TVshows/main/file/tv_shows.csv?token=AV53JLE35SVZ2QWVG32QX6DBXPC6M", stringsAsFactors = F)
 TV_show_4$IMDb <- sub("/10", "", TV_show_4$IMDb)
 IMDb_Netflix_9.0 <- TV_show_4 %>%
   filter(IMDb > 9.0, na.rm = TRUE,
