@@ -1,8 +1,6 @@
+## library
 library(shiny)
-library(ggplot2)
-library(dplyr)
 library(plotly)
-
 
 # Linear Plot
 linear_chart_sidebar <- sidebarPanel(
