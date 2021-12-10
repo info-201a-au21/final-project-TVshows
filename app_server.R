@@ -2,17 +2,16 @@
 library(shiny)
 library(plotly)
 library(ggplot2)
-library(dplyr)
 library(tidyverse)
 library(base)
 library(ggrepel)
 library(stats)
 library(graphics)
 library(RColorBrewer)
-library(kableExtra)
+library(dplyr)
 library(scales)
-library(lintr)
 library(knitr)
+
 
 ## read data
 # pie chart
@@ -28,32 +27,83 @@ prime_lang <- Prime_data %>%
 prime_lang$lang_prop <- percent(prime_lang$lang_prop, accuracy = 0.1)
 
 # bar chart
+# barchart
+# 9.0+
 TV_show_4 <- read.csv("https://raw.githubusercontent.com/info-201a-au21/final-project-TVshows/main/file/tv_shows.csv?token=AV53JLE35SVZ2QWVG32QX6DBXPC6M", stringsAsFactors = F)
 TV_show_4$IMDb <- sub("/10", "", TV_show_4$IMDb)
 IMDb_Netflix_9.0 <- TV_show_4 %>%
   filter(IMDb > 9.0, na.rm = TRUE,
          Netflix == 1) %>%
-  summarise(IMDb_Netflix = sum(Netflix, na.rm = TRUE))
+  summarise(IMDb_Netflix_9.0 = sum(Netflix, na.rm = TRUE))
 
 IMDb_Hulu_9.0 <- TV_show_4 %>%
   filter(IMDb > 9.0, na.rm = TRUE,
          Hulu == 1) %>%
-  summarise(IMDb_Hulu = sum(Hulu, na.rm = TRUE))
+  summarise(IMDb_Hulu_9.0 = sum(Hulu, na.rm = TRUE))
 
 IMDb_Prime_9.0 <- TV_show_4 %>%
   filter(IMDb > 9.0, na.rm = TRUE,
          Prime.Video == 1) %>%
-  summarise(IMDb_Prime = sum(Prime.Video, na.rm = TRUE))
+  summarise(IMDb_Prime_9.0 = sum(Prime.Video, na.rm = TRUE))
 
 IMDb_Disney_9.0 <- TV_show_4 %>%
   filter(IMDb > 9.0, na.rm = TRUE,
          Disney. == 1) %>%
-  summarise(IMDb_Disney = sum(Disney., na.rm = TRUE))
+  summarise(IMDb_Disney_9.0 = sum(Disney., na.rm = TRUE))
 
-overview_IMDb <- cbind(IMDb_Netflix_9.0, IMDb_Hulu_9.0, IMDb_Disney_9.0, IMDb_Prime_9.0)
-new_IMDb <- t(overview_IMDb)
-new_IMDb <- data.frame(names = row.names(new_IMDb), new_IMDb)
+# 7.0-9.0
+IMDb_Netflix_8.0 <- TV_show_4 %>%
+  filter(IMDb > 7.0, IMDb <= 9.0, na.rm = TRUE,
+         Netflix == 1) %>%
+  summarise(IMDb_Netflix_8.0 = sum(Netflix, na.rm = TRUE))
 
+IMDb_Hulu_8.0 <- TV_show_4 %>%
+  filter(IMDb > 7.0, IMDb <= 9.0, na.rm = TRUE,
+         Hulu == 1) %>%
+  summarise(IMDb_Hulu_8.0 = sum(Hulu, na.rm = TRUE))
+
+IMDb_Prime_8.0 <- TV_show_4 %>%
+  filter(IMDb > 7.0, IMDb <= 9.0, na.rm = TRUE,
+         Prime.Video == 1) %>%
+  summarise(IMDb_Prime_8.0 = sum(Prime.Video, na.rm = TRUE))
+
+IMDb_Disney_8.0 <- TV_show_4 %>%
+  filter(IMDb > 7.0, IMDb <= 9.0, na.rm = TRUE,
+         Disney. == 1) %>%
+  summarise(IMDb_Disney_8.0 = sum(Disney., na.rm = TRUE))
+
+# 7.0 - 
+IMDb_Netflix_7.0 <- TV_show_4 %>%
+  filter(IMDb < 7.0, na.rm = TRUE,
+         Netflix == 1) %>%
+  summarise(IMDb_Netflix_7.0 = sum(Netflix, na.rm = TRUE))
+
+IMDb_Hulu_7.0 <- TV_show_4 %>%
+  filter(IMDb < 7.0, na.rm = TRUE,
+         Hulu == 1) %>%
+  summarise(IMDb_Hulu_7.0 = sum(Hulu, na.rm = TRUE))
+
+IMDb_Prime_7.0 <- TV_show_4 %>%
+  filter(IMDb < 7.0, na.rm = TRUE,
+         Prime.Video == 1) %>%
+  summarise(IMDb_Prime_7.0 = sum(Prime.Video, na.rm = TRUE))
+
+IMDb_Disney_7.0 <- TV_show_4 %>%
+  filter(IMDb < 7.0, na.rm = TRUE,
+         Disney. == 1) %>%
+  summarise(IMDb_Disney_7.0 = sum(Disney., na.rm = TRUE))
+
+
+overview_IMDb_9.0 <- cbind(IMDb_Netflix_9.0, IMDb_Hulu_9.0, IMDb_Disney_9.0, IMDb_Prime_9.0)
+overview_IMDb_8.0 <- cbind(IMDb_Netflix_8.0, IMDb_Hulu_8.0, IMDb_Disney_8.0, IMDb_Prime_8.0)
+overview_IMDb_7.0 <- cbind(IMDb_Netflix_7.0, IMDb_Hulu_7.0, IMDb_Disney_7.0, IMDb_Prime_7.0)
+new_IMDb_9.0 <- as.data.frame(t(overview_IMDb_9.0))
+new_IMDb_8.0 <- as.data.frame(t(overview_IMDb_8.0))
+new_IMDb_7.0 <- as.data.frame(t(overview_IMDb_7.0))
+new_IMDb_all <- cbind(new_IMDb_7.0, new_IMDb_8.0, new_IMDb_9.0)
+colnames(new_IMDb_all) <- c("< 0.7", "0.7 - 0.9", "0.9+")
+rownames(new_IMDb_all) <- c("Netflix", "Hulu", "Disney+", "Prime")
+x_axis <- c("Netflix", "Hulu", "Disney+", "Prime")
 
 
 # line chart
@@ -104,35 +154,30 @@ server <- function(input, output) {
     lang_pie
   })
   
-  # bar chart
   output$bar <- renderPlot({
-    if (input$pie) {
-      bar_IMDb <- ggplot(new_IMDb, aes(x = "", y = new_IMDb, fill = names)) +
-        geom_bar(stat = "identity") +
-        labs(title = "IMDb Higher Than 9.0", y = "", x = "") +
-        coord_polar("y", start = 0) +
-        geom_text(aes(label = paste0(new_IMDb)), position = position_stack(vjust=0.5)) +
-        labs(title = "IMDb Higher Than 9.0", y = "", x = "") +
-        scale_fill_brewer(palette="Paired")
-    } else {
-      bar_IMDb <- ggplot(data = new_IMDb, mapping = aes(x = names,
-                                                        y = new_IMDb,
-                                                        fill = names)) +
-        geom_bar(stat = "identity") +
-        labs(x = "Platforms", y = "Amount of TV shows with 9.0 +", title = "IMDb Higher Than 9.0")
-    }
-    bar_IMDb
+    bar_IMDb <- ggplot(data = new_IMDb_all) +
+      geom_bar(aes(x = x_axis,
+                   y = !!as.name(input$range),
+                   fill = x_axis),
+               stat = "identity") +
+      labs(x = "Platforms", 
+           y = "Amount of TV shows with 9.0 +", 
+           title = "IMDb Distribution")
+    return(bar_IMDb)
   })
   
   output$line <- renderPlot({
-    p <- ggplot(data = year_aggregate, 
-                mapping = aes(x = Year, y = netflix_per_year, color = "netflix")) +
-      geom_point()
-    labs(x = "Year", y = "Number of TV Shows", title = "The Amount of TV Shows on 4 Platforms Each Year") +
-      scale_color_manual(values = color)
-    if (input$smooth) {
-      p <- p + geom_smooth(se = F)
-    }
-    p
+    plot_data <- year_aggregate %>%
+      filter(Year > input$year[1], Year < input$year[2])
+    
+    linear <- ggplot(data = plot_data, aes(x = Year)) +
+      geom_line(aes(y = netflix_per_year, color = "blue")) +
+      geom_line(aes(y = hulu_per_year, color = "red")) +
+      geom_line(aes(y = prime_per_year, color = "green")) +
+      geom_line(aes(y = disney_per_year, color = "yellow")) +
+      labs(x = input$year, y = "Number of TV Shows",
+           title = "The Amount of TV Shows on 4 Platforms Each Year")
+    # scale_color_manual(values = color)
+    return(linear)
   })
 }

@@ -3,19 +3,19 @@ library(shiny)
 library(plotly)
 
 # Linear Plot
-year_range <- as.numeric(range(year_aggregate$Year)) 
+year_range <- as.numeric(range(year_aggregate$Year))
 linear_chart_sidebar <- sidebarPanel(
   sliderInput(
     inputId = "year",
-    label = "Year Range", 
+    label = "Year Range",
     min = year_range[1],
-    max = year_range[2], 
+    max = year_range[2],
     value = c(2000,2020)
   )
 )
 
 linear_chart_main <- mainPanel(
-  plotlyOutput(outputId = "line")
+  plotOutput(outputId = "line")
 )
 
 linear_chart_tab <- tabPanel(
@@ -24,45 +24,33 @@ linear_chart_tab <- tabPanel(
   sidebarLayout(
     linear_chart_sidebar,
     linear_chart_main,
-  ),
-  fluidPage(
-    p("some words")
   )
 )
 
 #bar chart
-bar_sidebar_content <- sidebarPanel(
-  checkboxInput("pie", label = strong("Turn into pie chart"), value = F)
-)
-
-bar_main_content <- mainPanel(
-  plotOutput("bar")
-)
-
-bar_panel <- tabPanel(
-  "Bar chart",
-  titlePanel("Bar chart"), 
-  sidebarLayout(
-    bar_sidebar_content,
-    bar_main_content
+bar_chart_sidebar <- sidebarPanel(
+  selectInput(
+    inputId = "range",
+    label = "IMDb Rating Range",
+    choices = list(
+      "IMDb > 9.0" = "0.9+",
+      "7.0 < IMDb <= 9.0" = "0.7 - 0.9",
+      "IMDb < 7.0" = "< 0.7"
+    ),
+    selected = "IMDb > 9.0"
   )
 )
 
-#line chart
-line_sidebar_content <- sidebarPanel(
-  checkboxInput("smooth", label = strong("Show Trendline"), value = T)
+bar_chart_main <- mainPanel(
+  plotOutput(outputId = "bar")
 )
 
-line_main_content <- mainPanel(
-  plotOutput("line")
-)
-
-line_panel <- tabPanel(
-  "Line chart",
-  titlePanel("Line chart"), 
+bar_chart_tab <- tabPanel(
+  "Bar Chart Visulization",
+  titlePanel("Bar chart"),
   sidebarLayout(
-    line_sidebar_content,
-    line_main_content
+    bar_chart_sidebar,
+    bar_chart_main,
   )
 )
 
@@ -131,7 +119,7 @@ conclude_tab <- tabPanel(
       was stimulated in return. However, the pandemic in 2020 hindered the productions,
       and a massive reduction in numbers was presented."),
     br(),
-    h4("2. Trend of TVshows"),
+    h4("2. Trend of TV shows"),
     p("In this big data era, internet databases collect reviews and ratings of movies and tv 
        series is a phenomenon and provide a reference for users to make tv show selections. 
        Within the 10 point rating scale, subscribers are able to pick high-quality shows easily. 
@@ -157,11 +145,15 @@ conclude_tab <- tabPanel(
 )
 
 # ui
-ui <- navbarPage(
-  "TV show",
-  intro_tab,
-  line_panel,
-  bar_panel,
-  pie_chart_tab,
-  conclude_tab
+ui <- fluidPage(
+  includeCSS("style.css"),
+  navbarPage(
+    "TV show",
+    intro_tab,
+    linear_chart_tab,
+    bar_chart_tab,
+    pie_chart_tab,
+    conclude_tab
+  )
 )
+  
