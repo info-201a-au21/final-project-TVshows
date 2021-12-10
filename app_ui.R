@@ -119,7 +119,7 @@ conclude_tab <- tabPanel(
       was stimulated in return. However, the pandemic in 2020 hindered the productions,
       and a massive reduction in numbers was presented."),
     br(),
-    h4("2. Trend of TV shows"),
+    h4("2. Trend of TV Shows"),
     p("In this big data era, internet databases collect reviews and ratings of movies and tv 
        series is a phenomenon and provide a reference for users to make tv show selections. 
        Within the 10 point rating scale, subscribers are able to pick high-quality shows easily. 

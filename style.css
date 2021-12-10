@@ -1,11 +1,19 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@600&family=Roboto+Condensed:ital,wght@0,300;1,300&display=swap');
 
 h4 {
-  color: blue;
-  font-family: 'Roboto Condensed', sans-serif;
+  color: #428bcf;
+  font-family: 'Oswald', sans-serif;
+}
+
+h4:hover {
+  color:#3e6385;
 }
 
 h3 {
-  color: brown;
-  font-family: 'Roboto Condensed', sans-serif;
+  color: #955fb0;
+  font-family: 'Oswald', sans-serif;
+}
+
+h3:hover {
+  color: #623678;
 }
