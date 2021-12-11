@@ -171,11 +171,11 @@ server <- function(input, output) {
       filter(Year > input$year[1], Year < input$year[2])
     
     linear <- ggplot(data = plot_data, aes(x = Year)) +
-      geom_line(aes(y = netflix_per_year, color = "blue")) +
-      geom_line(aes(y = hulu_per_year, color = "red")) +
-      geom_line(aes(y = prime_per_year, color = "green")) +
-      geom_line(aes(y = disney_per_year, color = "yellow")) +
-      labs(x = input$year, y = "Number of TV Shows",
+      geom_line(aes(y = netflix_per_year, color = "netflix")) +
+      geom_line(aes(y = hulu_per_year, color = "hulu")) +
+      geom_line(aes(y = prime_per_year, color = "prime")) +
+      geom_line(aes(y = disney_per_year, color = "disney")) +
+      labs(x = "Years", y = "Number of TV Shows",
            title = "The Amount of TV Shows on 4 Platforms Each Year")
     # scale_color_manual(values = color)
     return(linear)
