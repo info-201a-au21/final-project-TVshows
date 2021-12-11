@@ -156,7 +156,7 @@ server <- function(input, output) {
   
   output$bar <- renderPlot({
     bar_IMDb <- ggplot(data = new_IMDb_all) +
-      geom_bar(aes(x = x_axis,
+      geom_bar(aes(x = Platforms,
                    y = !!as.name(input$range),
                    fill = Platforms),
                stat = "identity") +
