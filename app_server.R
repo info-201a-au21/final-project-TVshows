@@ -103,7 +103,7 @@ new_IMDb_7.0 <- as.data.frame(t(overview_IMDb_7.0))
 new_IMDb_all <- cbind(new_IMDb_7.0, new_IMDb_8.0, new_IMDb_9.0)
 colnames(new_IMDb_all) <- c("< 0.7", "0.7 - 0.9", "0.9+")
 rownames(new_IMDb_all) <- c("Netflix", "Hulu", "Disney+", "Prime")
-x_axis <- c("Netflix", "Hulu", "Disney+", "Prime")
+Platforms <- c("Netflix", "Hulu", "Disney+", "Prime")
 
 
 # line chart
@@ -158,7 +158,7 @@ server <- function(input, output) {
     bar_IMDb <- ggplot(data = new_IMDb_all) +
       geom_bar(aes(x = x_axis,
                    y = !!as.name(input$range),
-                   fill = x_axis),
+                   fill = Platforms),
                stat = "identity") +
       labs(x = "Platforms", 
            y = "Amount of TV shows with 9.0 +", 
